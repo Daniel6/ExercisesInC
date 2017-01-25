@@ -27,6 +27,7 @@ int *foo() {
 
 void bar() {
     int i;
+    // we don't have to malloc here because this array remains inside the function for the duration of its lifespan
     int array[SIZE]; // create a local array
 
     // display the memory address of this local array. It is the same as the address of the local array in foo()
