@@ -3,6 +3,8 @@
 int main() {
     char card_name[3];
     int count = 0;
+    int x = 5;
+    int y = x + 1;
     do {
         puts("Enter the card_name: ");
         scanf("%2s", card_name);
@@ -30,7 +32,7 @@ int main() {
         } else if (val == 10) {
             count--;
         }
-        printf("Current count: %i\n", count);
+        printf("Current count: %i\n", y);
     } while ( card_name[0] != 'X' );
 
     return 0;
