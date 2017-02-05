@@ -8,4 +8,5 @@ In sprint 1 we followed through on some of the examples from Head First C, which
 In sprint 1 we did chapters 1, 2, 3, and 11.
 ![exercise 1](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex01/hw1.c)
 ![exercise 2](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex02/ex02.md)
-![exercise 3]()
+![exercise 3](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex03/tee.c)
+![exercise 11]()

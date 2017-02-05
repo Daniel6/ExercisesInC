@@ -133,31 +133,34 @@ int main(int argc, char *argv[])
     char buf[255];
 
     while (1) {
-	connect_d = open_client_socket();
+	    connect_d = open_client_socket();
 
-	if (say(connect_d, intro_msg) == -1) {
-	    close(connect_d);
-	    continue;
-	}
+        if (!fork()) {
+            close(listener_d);
+        	if (say(connect_d, intro_msg) == -1) {
+        	    close(connect_d);
+        	    continue;
+        	}
 
-	read_in(connect_d, buf, sizeof(buf));
-	// check to make sure they said "Who's there?"
-	
-	if (say(connect_d, "Surrealist giraffe.\n") == -1) {
-	    close(connect_d);
-	    continue;
-	}
+        	read_in(connect_d, buf, sizeof(buf));
+        	if (strncasecmp("Who's there?", buf, 12)) {
+                say(connect_d, "You should say 'Who's there?'!");
+            } else {
+                if (say(connect_d, "Surrealist giraffe.\n") != -1) {
+                    read_in(connect_d, buf, sizeof(buf));
 
-	read_in(connect_d, buf, sizeof(buf));
-	// check to make sure they said "Surrealist giraffe who?"
+                    if (strncasecmp("Surrealist giraffe who?", buf, 10)) {
+                        say(connect_d, "You should say 'Surrealist giraffe who?'!\r\n");
+                    } else {
+                        say(connect_d, "Bathtub full of brightly-colored machine tools.\n");
+                    }
+                }
+            }
 
- 
-	if (say(connect_d, "Bathtub full of brightly-colored machine tools.\n") == -1) {
-	    close(connect_d);
-	    continue;
-	}
-
-	close(connect_d);
+        	close(connect_d);
+            exit(0);
+        }
+        close(connect_d);
     }
     return 0;
 }
