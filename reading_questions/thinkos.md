@@ -38,15 +38,15 @@ since you can play with pointers and mem addresses in C, you may accidentally st
 ### Processes
 
 1) Give a real-world example of virtualization (ideally not one of the ones in the book).
-
+When I go get money from the bank, it's not really my money, my money is all over the place. They actually don't have enough money for everyone, so they borrow and stuff from other banks.
 2) What is the difference between a program and a process?
-
+A process runs a program. Multiple processes can run the same program.
 3) What is the primary purpose of the process abstraction?  What illusion does the process abstraction create?
-
+The process abstraction makes the illusion that each program is in isolation.
 4) What is the kernel?
-
+The kernel is the core part of the operating system which handles all the low level stuff like threading and memory management.
 5) What is a daemon?
- 
+ A daemon is a background process that provides helpful utilities.
 
 ## Chapter 3
 
@@ -54,22 +54,22 @@ since you can play with pointers and mem addresses in C, you may accidentally st
 ### Virtual memory
 
 1) The Georgian alphabet has 33 letters.  How many bit are needed to specify a letter?
-
+7 bits.
 2) In the UTF-16 character encoding, the binary representation of a character can take up to 32 bits.  
 Ignoring the details of the encoding scheme, how many different characters can be represented?
-
+32^2=1024 characters
 3) What is the difference between "memory" and "storage" as defined in Think OS?
-
+Memory refers to the volatile random access memory of a computer while storage refers to harddisk storage.
 4) What is the difference between a GiB and a GB?  What is the percentage difference in their sizes?
-
+GiB is a binary unit while GB is a decimal unit. A GiB is 2.4% bigger than a GB.
 5) How does the virtual memory system help isolate processes from each other?
-
+It ensures that processes dont use the same physical memory because it becomes impossible for two processes to refer to the same real address.
 6) Why do you think the stack and the heap are usually located at opposite ends of the address space?
-
+So that they both have room to grow without running in to each other. 
 7) What Python data structure would you use to represent a sparse array?
-
+A linked list because all the null elements could point to the same address, saving space.
 8) What is a context switch?
-
+When a process is halted, its state is saved, and then a new process is started.
 In this directory, you should find a subdirectory named `aspace` that contains `aspace.c`.  Run it on your computer and compare your results to mine.
   
 1) Add a second call to `malloc` and check whether the heap on your system grows up (toward larger addresses).  
