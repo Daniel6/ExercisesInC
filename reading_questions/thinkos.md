@@ -71,14 +71,14 @@ A linked list because all the null elements could point to the same address, sav
 8) What is a context switch?
 When a process is halted, its state is saved, and then a new process is started.
 In this directory, you should find a subdirectory named `aspace` that contains `aspace.c`.  Run it on your computer and compare your results to mine.
-  
+We have more or less the same results.
 1) Add a second call to `malloc` and check whether the heap on your system grows up (toward larger addresses).  
-
+It does grow up towards larger addresses.
 2) Add a function that prints the address of a local variable, and check whether the stack grows down.  
-
+The stack does indeed grow down.
 3) Choose a random number between 1 and 32, and allocate two chunks with that size.  
 How much space is there between them?  Hint: Google knows how to subtract hexadecimal numbers.
-
+I allocated chunks of size 16. There was a gap of size 32 between them.
 
 ## Chapter 4
 
@@ -87,21 +87,22 @@ How much space is there between them?  Hint: Google knows how to subtract hexade
 
 1) What abstractions do file systems provide?  Give an example of something that is logically 
 true about files systems but not true of their implementations.
-
+In implementations you don't have to deal with carefully managing which sectors you write to, or trying to minimize seek time with a hard disk.
 2) What information do you imagine is stored in an `OpenFileTableEntry`?
-
+The amount of the file that has been read, the length of the file.
 3) What are some of the ways operating systems deal with the relatively slow performance of persistent storage?
-
+They run other processes while a process is waiting for persistent storage, or predict which blocks you will need and fetch them beforehand.
 4) Suppose your program writes a file and prints a message indicating that it is done writing.  
 Then a power cut crashes your computer.  After you restore power and reboot the computer, you find that the 
 file you wrote is not there.  What happened?
-
+The operating system didn't get a chance to actually close and write the file to storage, so it was still in memory when the crash happened.
 5) Can you think of one advantage of a File Allocation Table over a UNIX inode?  Or an advantage of a inode over a FAT?
-
+A FAT is better than an inode for large files because it is simpler and takes less sapce. Inodes are better for smaller files because they fit nicely into the file system.
 6) What is overhead?  What is fragmentation?
-
+Overhead is the space required to keep track of a file, storing this data adds to the footprint of the file.
+Fragmentation is when storage blocks never get used or are only ever partially used.
 7) Why is the "everything is a file" principle a good idea?  Why might it be a bad idea?
-
+It seems like a great idea, simplifying communications and making inter process communications "just work."
 If you would like to learn more about file systems, a good next step is to learn about journaling file systems.  
 Start with [this Wikipedia article](https://en.wikipedia.org/wiki/Journaling_file_system), then 
 [Anatomy of Linux Journaling File Systems](http://www.ibm.com/developerworks/library/l-journaling-filesystems/index.html).  
