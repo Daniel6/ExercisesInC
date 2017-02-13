@@ -6,10 +6,10 @@ In sprint 1 we followed through on some of the examples from Head First C, which
 
 ### HFC Exercises
 In sprint 1 we did chapters 1, 2, 3, and 11.
-![exercise 1](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex01/hw1.c)
-![exercise 2](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex02/ex02.md)
-![exercise 3](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex03/tee.c)
-![exercise 11](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex11/ikkp-server.c)
+[exercise 1](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex01/hw1.c),
+[exercise 2](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex02/ex02.md),
+[exercise 3](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex03/tee.c),
+[exercise 11](https://github.com/Daniel6/ExercisesInC/blob/master/exercises/ex11/ikkp-server.c)
 
 ### TOS Reading Questions
 We did not do any Think OS stuff in sprint 1 and instead opted to do 4 chapters of TOS in sprint 2.
@@ -17,7 +17,7 @@ We did not do any Think OS stuff in sprint 1 and instead opted to do 4 chapters 
 ### Exam Question
 The following code goes through all the random numbers until it gets a 10, and then exits successfuly. What is the biggest problem with this program?
 
-![code](./randomnumbergenerator.c)
+[code](./randomnumbergenerator.c)
 
 Solution:
 There is a huge memory leak due to repeatedly malloc'ing without ever freeing those resources.
