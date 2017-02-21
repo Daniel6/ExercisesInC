@@ -19,13 +19,13 @@ In sprint 2 my team read chapters 1 through 4.
 This question is based on TOS chapter 4.
 
 In terms of memory location, what is the difference between 
-'''
+```c
 char *str = "abc";
-'''
+```
 and 
-'''
+```c
 static char *str = "abc";
-'''
+```
 
 Answer: 
 The first char pointer points to a string literal in static memory. The pointer itself lives in the stack. The second char pointer also points to a string literal in static memory, but the pointer itself is also in static memory due to the static keyword.
