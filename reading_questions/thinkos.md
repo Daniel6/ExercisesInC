@@ -38,45 +38,75 @@ since you can play with pointers and mem addresses in C, you may accidentally st
 ### Processes
 
 1) Give a real-world example of virtualization (ideally not one of the ones in the book).
-When I go get money from the bank, it's not really my money, my money is all over the place. They actually don't have enough money for everyone, so they borrow and stuff from other banks.
-2) What is the difference between a program and a process?
-A process runs a program. Multiple processes can run the same program.
-3) What is the primary purpose of the process abstraction?  What illusion does the process abstraction create?
-The process abstraction makes the illusion that each program is in isolation.
-4) What is the kernel?
-The kernel is the core part of the operating system which handles all the low level stuff like threading and memory management.
-5) What is a daemon?
- A daemon is a background process that provides helpful utilities.
 
+When I go get money from the bank, it's not really my money, my money is all over the place. They actually don't have enough money for everyone, so they borrow and stuff from other banks.
+
+2) What is the difference between a program and a process?
+
+A process runs a program. Multiple processes can run the same program.
+
+3) What is the primary purpose of the process abstraction?  What illusion does the process abstraction create?
+
+The process abstraction makes the illusion that each program is in isolation.
+
+4) What is the kernel?
+
+The kernel is the core part of the operating system which handles all the low level stuff like threading and memory management.
+
+5) What is a daemon?
+
+A daemon is a background process that provides helpful utilities.
+ 
 ## Chapter 3
 
 
 ### Virtual memory
 
 1) The Georgian alphabet has 33 letters.  How many bit are needed to specify a letter?
+
 7 bits.
-2) In the UTF-16 character encoding, the binary representation of a character can take up to 32 bits.  
+
+2) In the UTF-16 character encoding, the binary representation of a character can take up to 32 bits. 
+
 Ignoring the details of the encoding scheme, how many different characters can be represented?
 32^2=1024 characters
+
 3) What is the difference between "memory" and "storage" as defined in Think OS?
+
 Memory refers to the volatile random access memory of a computer while storage refers to harddisk storage.
+
 4) What is the difference between a GiB and a GB?  What is the percentage difference in their sizes?
+
 GiB is a binary unit while GB is a decimal unit. A GiB is 2.4% bigger than a GB.
+
 5) How does the virtual memory system help isolate processes from each other?
+
 It ensures that processes dont use the same physical memory because it becomes impossible for two processes to refer to the same real address.
+
 6) Why do you think the stack and the heap are usually located at opposite ends of the address space?
+
 So that they both have room to grow without running in to each other. 
+
 7) What Python data structure would you use to represent a sparse array?
+
 A linked list because all the null elements could point to the same address, saving space.
+
 8) What is a context switch?
+
 When a process is halted, its state is saved, and then a new process is started.
 In this directory, you should find a subdirectory named `aspace` that contains `aspace.c`.  Run it on your computer and compare your results to mine.
 We have more or less the same results.
-1) Add a second call to `malloc` and check whether the heap on your system grows up (toward larger addresses).  
+
+1) Add a second call to `malloc` and check whether the heap on your system grows up (toward larger addresses). 
+
 It does grow up towards larger addresses.
+
 2) Add a function that prints the address of a local variable, and check whether the stack grows down.  
+
 The stack does indeed grow down.
+
 3) Choose a random number between 1 and 32, and allocate two chunks with that size.  
+
 How much space is there between them?  Hint: Google knows how to subtract hexadecimal numbers.
 I allocated chunks of size 16. There was a gap of size 32 between them.
 
@@ -86,22 +116,35 @@ I allocated chunks of size 16. There was a gap of size 32 between them.
 ### Files and file systems
 
 1) What abstractions do file systems provide?  Give an example of something that is logically 
+
 true about files systems but not true of their implementations.
 In implementations you don't have to deal with carefully managing which sectors you write to, or trying to minimize seek time with a hard disk.
+
 2) What information do you imagine is stored in an `OpenFileTableEntry`?
+
 The amount of the file that has been read, the length of the file.
+
 3) What are some of the ways operating systems deal with the relatively slow performance of persistent storage?
+
 They run other processes while a process is waiting for persistent storage, or predict which blocks you will need and fetch them beforehand.
+
 4) Suppose your program writes a file and prints a message indicating that it is done writing.  
+
 Then a power cut crashes your computer.  After you restore power and reboot the computer, you find that the 
 file you wrote is not there.  What happened?
 The operating system didn't get a chance to actually close and write the file to storage, so it was still in memory when the crash happened.
+
 5) Can you think of one advantage of a File Allocation Table over a UNIX inode?  Or an advantage of a inode over a FAT?
+
 A FAT is better than an inode for large files because it is simpler and takes less sapce. Inodes are better for smaller files because they fit nicely into the file system.
+
 6) What is overhead?  What is fragmentation?
+
 Overhead is the space required to keep track of a file, storing this data adds to the footprint of the file.
 Fragmentation is when storage blocks never get used or are only ever partially used.
+
 7) Why is the "everything is a file" principle a good idea?  Why might it be a bad idea?
+
 It seems like a great idea, simplifying communications and making inter process communications "just work."
 If you would like to learn more about file systems, a good next step is to learn about journaling file systems.  
 Start with [this Wikipedia article](https://en.wikipedia.org/wiki/Journaling_file_system), then 
