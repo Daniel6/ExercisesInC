@@ -1,3 +1,9 @@
+/*
+  C implementation of the 'tee' unix command
+
+  Daniel Bishop
+*/
+
 #include <stdio.h>
 #include <stdlib.h> 
 
