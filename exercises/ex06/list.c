@@ -65,7 +65,10 @@ int pop(Node **list) {
  * val: value to add
  */
 void push(Node **list, int val) {
-    // FILL THIS IN!
+    Node *newNode = malloc(sizeof(Node));
+    newNode->val = val;
+    newNode->next = *list;
+    *list = newNode;
 }
 
 
@@ -79,8 +82,24 @@ void push(Node **list, int val) {
  * returns: number of nodes removed
  */
 int remove_by_value(Node **list, int val) {
-    // FILL THIS IN!
-    return 0;
+    Node *currNode = *list;
+    if (currNode->val == val) {
+        if (currNode->next == NULL) {
+            currNode = NULL;
+            return 1;
+        }
+    }
+
+    Node *prevNode = currNode;
+    currNode = currNode->next;
+    while (currNode != NULL) {
+        if (currNode->val == val) {
+            prevNode->next = currNode->next;
+            return 1;
+        }
+        prevNode = currNode;
+        currNode = currNode->next;
+    }
 }
 
 
@@ -91,7 +110,19 @@ int remove_by_value(Node **list, int val) {
  * list: pointer to pointer to Node
  */
 void reverse(Node **list) {
-    // FILL THIS IN!
+    Node *prevNode = NULL;
+    Node *currNode = *list;
+    Node *nextNode = currNode->next;
+
+    while (nextNode != NULL) {
+        currNode->next = prevNode;
+        prevNode = currNode;
+        currNode = nextNode;
+        nextNode = currNode->next;
+    }
+
+    currNode->next = prevNode;
+    *list = currNode;
 }
 
 
