@@ -80,6 +80,7 @@ typedef struct {
     int counter;
     int end;
     int *array;
+    Semaphore* sem;
 } Shared;
 
 /*  make_shared
@@ -102,6 +103,7 @@ Shared *make_shared (int end)
     for (i=0; i<shared->end; i++) {
         shared->array[i] = 0;
     }
+    shared->sem = make_semaphore(1);
     return shared;
 }
 
@@ -157,15 +159,18 @@ void child_code (Shared *shared)
     // printf ("Starting child at counter %d\n", shared->counter);
 
     while (1) {
-	    if (shared->counter >= shared->end) {
-	        return;
-	    }
-	    shared->array[shared->counter]++;
-	    shared->counter++;
+      sem_wait(shared->sem);
+      if (shared->counter >= shared->end) {
+          sem_signal(shared->sem);
+          return;
+      }
+      shared->array[shared->counter]++;
+      shared->counter++;
 
-	    if (shared->counter % 100000 == 0) {
-	        // printf ("%d\n", shared->counter);
-	    }
+      if (shared->counter % 100000 == 0) {
+          // printf ("%d\n", shared->counter);
+      }
+      sem_signal(shared->sem);
     }
 }
 
@@ -199,7 +204,7 @@ void check_array (Shared *shared)
     // printf ("Checking...\n");
 
     for (i=0; i<shared->end; i++) {
-	    if (shared->array[i] != 1) errors++;
+      if (shared->array[i] != 1) errors++;
     }
     // printf ("%d errors.\n", errors);
 }
@@ -217,11 +222,11 @@ int main ()
     Shared *shared = make_shared (100000000);
 
     for (i=0; i<NUM_CHILDREN; i++) {
-	child[i] = make_thread (entry, shared);
+  child[i] = make_thread (entry, shared);
     }
 
     for (i=0; i<NUM_CHILDREN; i++) {
-	    join_thread (child[i]);
+      join_thread (child[i]);
     }
 
     check_array (shared);
