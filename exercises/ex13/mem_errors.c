@@ -9,17 +9,14 @@ License: Creative Commons Attribution-ShareAlike 3.0
 #include <stdlib.h>
 #include <assert.h>
 
-
 void free_anything(int *p) {
     free(p);
 }
-
 
 int read_element(int *array, int index) {
     int x = array[index];
     return x;
 }
-
 
 int main ()
 {
@@ -31,16 +28,20 @@ int main ()
     int *array2 = malloc (100 * sizeof (int));
 
     // valgrind does not bounds-check static arrays
-    read_element(array1, -1);
-    read_element(array1, 100);
+    read_element(array1, 0);
+    read_element(array1, 99);
+    // array 1 not malloc'ed so dont free
 
     // but it does bounds-check dynamic arrays
-    read_element(array2, -1);
-    read_element(array2, 100);
+    read_element(array2, 0);
+    read_element(array2, 99);
+
+    // don't need array 2 anymore
+    free(array2);
 
     // and it catches use after free
-    free(use_after_free);
     *use_after_free = 17;
+    free(use_after_free);
     
     // never_free is definitely lost
     *never_free = 17;
@@ -49,10 +50,13 @@ int main ()
     // free(&never_allocated);
 
     // but this one doesn't
-    free_anything(&never_allocated);
+    // dont need to free a non-allocated thing
+    // free_anything(&never_allocated);
     
     free(free_twice);
-    free(free_twice);
+    // dont free twice
+    // free(free_twice);
 
+    free(never_free); // I know it says to never free it but really
     return 0;
 }

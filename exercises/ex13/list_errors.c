@@ -33,15 +33,16 @@ void print_list(Node *head) {
 
 int pop(Node **head) {
     int retval;
-    Node *next_node;
+    // Node *next_node;
 
     if (*head == NULL) {
         return -1;
     }
 
-    next_node = (*head)->next;
+    // next_node = (*head)->next;
     retval = (*head)->val;
-    *head = next_node;
+    free(*head); // dont care about that node anymore
+    *head = (*head)->next;
 
     return retval;
 }
@@ -71,6 +72,7 @@ int remove_by_value(Node **head, int val) {
 	if (node->next->val == val) {
 	    victim = node->next;
 	    node->next = victim->next;
+        free(victim); // destroy node thats getting removed
 	    return 1;
 	}
     }
@@ -96,6 +98,10 @@ void reverse(Node **head) {
 	next = temp;
     }
     *head = node;
+
+    // cleanup utility pointers
+    free(next);
+    free(temp);
 }
 
 // Adds a new element to the list before the indexed element.
@@ -129,8 +135,21 @@ Node *make_something() {
     int val = pop(&node1);
     push(&node2, val);
     node3->next = node2;
-
+    // free(node1);
     return node3;
+}
+
+// Free up memory used by list
+void destroy_list(Node* list) {
+    Node* curr = list;
+    Node* next;
+    while (curr != NULL) {
+        next = curr->next;
+        free(curr);
+        curr = next;
+    }
+
+    free(next);
 }
 
 int main() {
@@ -151,6 +170,8 @@ int main() {
 
     printf("test_list\n");
     print_list(test_list);
+    // dont need test_list anymore
+    destroy_list(test_list);
 
     // make an empty list
     printf("empty\n");
@@ -159,9 +180,11 @@ int main() {
     // add an element to the empty list
     insert_by_index(&empty, 1, 0);
     print_list(empty);
+    // dont need list anymore
+    destroy_list(empty);
 
     Node *something = make_something();
-    free(something);
+    destroy_list(something);
 
     return 0;
 }

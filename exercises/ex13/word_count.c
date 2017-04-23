@@ -6,7 +6,7 @@ License: Creative Commons Attribution-ShareAlike 3.0
 Started with ex-ghashtable-3.c from
 http://www.ibm.com/developerworks/linux/tutorials/l-glib/section5.html
 
-Note: this version leaks memory.
+Note: this version no longer(!) leaks memory.
 
 */
 
@@ -22,6 +22,19 @@ typedef struct {
     gchar *word;
 } Pair;
 
+// destructors
+void destroy_hash(gpointer key_p, gpointer val_p, gpointer user_data) {
+    // capture the data being pointed to and free it
+    gchar* key = (gchar*) key_p;
+    g_free(key); // special glib free
+    gint* val = (gint*) val_p;
+    g_free(val);
+}
+
+void destroy_pair(gpointer v, gpointer user_data) {
+    Pair* pair = (Pair*) v;
+    g_free(pair);
+}
 
 /* Compares two key-value pairs by frequency. */
 gint compare_pair (gpointer v1, gpointer v2, gpointer user_data)
@@ -67,11 +80,12 @@ void incr (GHashTable* hash, gchar *key)
     gint *val = (gint *) g_hash_table_lookup (hash, key);
 
     if (val == NULL) {
-	gint *val1 = g_new (gint, 1);
-	*val1 = 1;
-	g_hash_table_insert (hash, key, val1);
+        gchar* key1 = g_strdup(key); // special glib strdup
+    	gint *val1 = g_new (gint, 1);
+    	*val1 = 1;
+    	g_hash_table_insert (hash, key1, val1);
     } else {
-	*val += 1;
+	   *val += 1;
     }
 }
 
@@ -108,11 +122,12 @@ int main (int argc, char** argv)
 	for (i=0; array[i] != NULL; i++) {
 	    incr(hash, array[i]);
 	}
+    g_strfreev(array); // array is a dubble pointer
     }
     fclose (fp);
 
     // print the hash table
-    // g_hash_table_foreach (hash,  (GHFunc) printor, "Word %s freq %d\n");
+    g_hash_table_foreach (hash,  (GHFunc) printor, "Word %s freq %d\n");
 
     // iterate the hash table and build the sequence
     GSequence *seq = g_sequence_new (NULL);
@@ -121,8 +136,9 @@ int main (int argc, char** argv)
     // iterate the sequence and print the pairs
     g_sequence_foreach (seq,  (GFunc) pair_printor, NULL);
 
-    // try (unsuccessfully) to free everything
-    // (in a future exercise, we will fix the memory leaks)
+    // free all the things
+    g_hash_table_foreach(hash, (GHFunc) destroy_hash, NULL);
+    g_sequence_foreach(hash, (GHFunc) destroy_pair, NULL);
     g_hash_table_destroy (hash);
     g_sequence_free (seq);
 
